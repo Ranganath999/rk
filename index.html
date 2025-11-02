@@ -3,168 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure File Sharing System - Encrypted Cloud Storage</title>
+    <title>AI Image Generator - Create Stunning Images from Text</title>
     <link rel="stylesheet" href="style.css">
-    
-    <!-- CryptoJS Library for AES Encryption/Decryption -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-    
-    <!-- Firebase SDK (v9 modular) -->
-    <script type="module" src="firebase-config.js"></script>
 </head>
 <body>
     <div class="container">
         <!-- Header Section -->
         <header>
-            <h1>🔒 Secure File Sharing System</h1>
-            <p class="subtitle">End-to-End Encrypted Cloud Storage</p>
-            <p class="info">All files are encrypted in your browser before upload. Your passphrase never leaves your device.</p>
+            <h1>🎨 AI Image Generator</h1>
+            <p class="subtitle">Transform Your Words into Stunning Visuals</p>
+            <p class="info">Powered by advanced AI models to create high-quality images from your text descriptions</p>
         </header>
 
-        <!-- Backend Selection -->
-        <div class="backend-selector">
-            <label>
-                <input type="radio" name="backend" value="firebase" checked>
-                <span>Firebase Storage</span>
-            </label>
-            <label>
-                <input type="radio" name="backend" value="nodejs">
-                <span>Node.js Backend</span>
-            </label>
-        </div>
-
-        <!-- Authentication Section (Firebase Only) -->
-        <div id="auth-section" class="card">
-            <h2>🔐 Authentication</h2>
-            <div id="auth-status" class="auth-status">
-                <p>Not logged in</p>
-            </div>
-            <div id="auth-buttons">
-                <button id="login-btn" class="btn btn-secondary">Login with Google</button>
-                <button id="logout-btn" class="btn btn-secondary" style="display: none;">Logout</button>
-            </div>
-        </div>
-
-        <!-- Upload Section -->
+        <!-- Main Generation Section -->
         <div class="card">
-            <h2>📤 Encrypt & Upload File</h2>
+            <h2>✨ Create Your Image</h2>
             
             <div class="form-group">
-                <label for="file-input">Select File:</label>
-                <input type="file" id="file-input" class="file-input">
-                <div class="file-info" id="file-info"></div>
+                <label for="prompt-input">Image Prompt:</label>
+                <textarea 
+                    id="prompt-input" 
+                    class="textarea-field" 
+                    placeholder="Describe the image you want to generate... (e.g., 'A serene mountain landscape at sunset with a crystal clear lake reflecting the orange sky')"
+                    rows="4"
+                ></textarea>
+                <small>💡 Be descriptive! Include details about style, colors, mood, and composition for best results.</small>
             </div>
 
             <div class="form-group">
-                <label for="upload-passphrase">Encryption Passphrase:</label>
-                <input type="password" id="upload-passphrase" class="input-field" placeholder="Enter a strong passphrase">
-                <small>⚠️ Remember this passphrase - you'll need it to decrypt the file!</small>
+                <label for="negative-prompt">Negative Prompt (Optional):</label>
+                <textarea 
+                    id="negative-prompt" 
+                    class="textarea-field" 
+                    placeholder="What to avoid in the image... (e.g., 'blurry, low quality, distorted')"
+                    rows="2"
+                ></textarea>
+                <small>Specify elements you don't want in the generated image</small>
             </div>
 
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" id="show-upload-pass">
-                    Show passphrase
-                </label>
-            </div>
-
-            <button id="encrypt-upload-btn" class="btn btn-primary">🔒 Encrypt & Upload</button>
-            
-            <div id="upload-progress" class="progress-section"></div>
-        </div>
-
-        <!-- Download Section -->
-        <div class="card">
-            <h2>📥 Download & Decrypt File</h2>
-            
-            <div class="form-group">
-                <label for="file-url">File URL or ID:</label>
-                <input type="text" id="file-url" class="input-field" placeholder="Enter file URL or ID">
-                <small>Paste the download link you received</small>
-            </div>
-
-            <div class="form-group">
-                <label for="download-passphrase">Decryption Passphrase:</label>
-                <input type="password" id="download-passphrase" class="input-field" placeholder="Enter the passphrase">
-            </div>
-
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" id="show-download-pass">
-                    Show passphrase
-                </label>
-            </div>
-
-            <button id="download-decrypt-btn" class="btn btn-primary">🔓 Download & Decrypt</button>
-            
-            <div id="download-progress" class="progress-section"></div>
-        </div>
-
-        <!-- Uploaded Files List (Firebase Only) -->
-        <div id="files-list-section" class="card" style="display: none;">
-            <h2>📁 Your Uploaded Files</h2>
-            <div id="files-list" class="files-list"></div>
-        </div>
-
-        <!-- File Integrity Check Section -->
-        <div class="card">
-            <h2>✅ File Integrity Verification</h2>
-            <p class="info">Verify file integrity using SHA-256 hash</p>
-            
-            <div class="form-group">
-                <label for="verify-file-input">Select File to Verify:</label>
-                <input type="file" id="verify-file-input" class="file-input">
-            </div>
-
-            <button id="verify-btn" class="btn btn-secondary">Calculate SHA-256 Hash</button>
-            
-            <div id="verify-result" class="verify-result"></div>
-        </div>
-
-        <!-- Instructions -->
-        <div class="card instructions">
-            <h2>📖 How It Works</h2>
-            <div class="steps">
-                <div class="step">
-                    <h3>Upload Process:</h3>
-                    <ol>
-                        <li>Select a file from your device</li>
-                        <li>Enter a strong passphrase (remember it!)</li>
-                        <li>File is encrypted locally using AES-256</li>
-                        <li>Encrypted file (.enc) is uploaded to cloud storage</li>
-                        <li>You receive a download link/ID</li>
-                    </ol>
+            <div class="options-grid">
+                <div class="form-group">
+                    <label for="model-select">AI Model:</label>
+                    <select id="model-select" class="select-field">
+                        <option value="stabilityai/stable-diffusion-2-1">Stable Diffusion 2.1</option>
+                        <option value="runwayml/stable-diffusion-v1-5">Stable Diffusion 1.5</option>
+                        <option value="prompthero/openjourney">OpenJourney</option>
+                        <option value="CompVis/stable-diffusion-v1-4">Stable Diffusion 1.4</option>
+                    </select>
                 </div>
-                <div class="step">
-                    <h3>Download Process:</h3>
-                    <ol>
-                        <li>Paste the file URL or ID</li>
-                        <li>Enter the same passphrase used for encryption</li>
-                        <li>Encrypted file is downloaded from cloud</li>
-                        <li>File is decrypted locally in your browser</li>
-                        <li>Original file is saved to your device</li>
-                    </ol>
+
+                <div class="form-group">
+                    <label for="steps-input">Quality Steps: <span id="steps-value">30</span></label>
+                    <input 
+                        type="range" 
+                        id="steps-input" 
+                        class="slider-field" 
+                        min="10" 
+                        max="50" 
+                        value="30"
+                    >
+                    <small>Higher = Better quality but slower</small>
                 </div>
             </div>
-            <div class="security-note">
-                <strong>🔒 Security Features:</strong>
-                <ul>
-                    <li>✅ Client-side AES-256 encryption</li>
-                    <li>✅ Passphrase never sent to server</li>
-                    <li>✅ Server only stores encrypted data</li>
-                    <li>✅ SHA-256 integrity verification</li>
-                    <li>✅ Optional Firebase Authentication</li>
-                </ul>
+
+            <div class="form-group">
+                <label for="api-key-input">Hugging Face API Key:</label>
+                <input 
+                    type="password" 
+                    id="api-key-input" 
+                    class="input-field" 
+                    placeholder="Enter your Hugging Face API key (hf_...)"
+                >
+                <small>🔑 Get your free API key at <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener">huggingface.co/settings/tokens</a></small>
+            </div>
+
+            <button id="generate-btn" class="btn btn-primary">
+                <span class="btn-text">🎨 Generate Image</span>
+            </button>
+            
+            <div id="generation-status" class="status-section"></div>
+        </div>
+
+        <!-- Image Display Section -->
+        <div id="result-section" class="card" style="display: none;">
+            <h2>🖼️ Generated Image</h2>
+            
+            <div class="image-container">
+                <img id="generated-image" src="" alt="Generated image" class="generated-image">
+            </div>
+
+            <div class="image-actions">
+                <button id="download-btn" class="btn btn-secondary">
+                    📥 Download Image
+                </button>
+                <button id="new-generation-btn" class="btn btn-secondary">
+                    🔄 Generate Another
+                </button>
+            </div>
+
+            <div class="image-info">
+                <p><strong>Prompt:</strong> <span id="used-prompt"></span></p>
+                <p><strong>Model:</strong> <span id="used-model"></span></p>
+            </div>
+        </div>
+
+        <!-- Example Prompts Section -->
+        <div class="card examples-card">
+            <h2>💡 Example Prompts</h2>
+            <p class="info">Click any example to use it as your prompt</p>
+            
+            <div class="examples-grid">
+                <div class="example-item" data-prompt="A majestic dragon flying over a medieval castle at sunset, fantasy art style, highly detailed, vibrant colors">
+                    <div class="example-icon">🐉</div>
+                    <div class="example-text">Fantasy Dragon</div>
+                </div>
+                <div class="example-item" data-prompt="A futuristic cyberpunk city at night with neon lights, flying cars, and towering skyscrapers, cinematic lighting">
+                    <div class="example-icon">🌃</div>
+                    <div class="example-text">Cyberpunk City</div>
+                </div>
+                <div class="example-item" data-prompt="A serene Japanese garden with cherry blossoms, koi pond, and traditional bridge, peaceful atmosphere, spring season">
+                    <div class="example-icon">🌸</div>
+                    <div class="example-text">Japanese Garden</div>
+                </div>
+                <div class="example-item" data-prompt="A cute robot reading a book in a cozy library, warm lighting, digital art, kawaii style">
+                    <div class="example-icon">🤖</div>
+                    <div class="example-text">Robot Reading</div>
+                </div>
+                <div class="example-item" data-prompt="An astronaut floating in space with Earth in the background, photorealistic, 4K quality, stunning view">
+                    <div class="example-icon">🚀</div>
+                    <div class="example-text">Space Explorer</div>
+                </div>
+                <div class="example-item" data-prompt="A magical forest with glowing mushrooms and fireflies, mystical atmosphere, fantasy illustration">
+                    <div class="example-icon">🍄</div>
+                    <div class="example-text">Magical Forest</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="card tips-card">
+            <h2>📖 Tips for Better Results</h2>
+            <div class="tips-grid">
+                <div class="tip-item">
+                    <h3>🎯 Be Specific</h3>
+                    <p>Include details about style, colors, lighting, and composition. Instead of "a cat", try "a fluffy orange cat sitting on a windowsill, soft morning light"</p>
+                </div>
+                <div class="tip-item">
+                    <h3>🎨 Mention Art Style</h3>
+                    <p>Add style keywords like "digital art", "oil painting", "photorealistic", "anime style", or "watercolor" to guide the aesthetic</p>
+                </div>
+                <div class="tip-item">
+                    <h3>💫 Use Quality Terms</h3>
+                    <p>Include terms like "highly detailed", "4K", "professional", "cinematic lighting" to improve image quality</p>
+                </div>
+                <div class="tip-item">
+                    <h3>🚫 Use Negative Prompts</h3>
+                    <p>Specify what you don't want: "blurry", "low quality", "distorted", "ugly" to avoid unwanted elements</p>
+                </div>
             </div>
         </div>
 
         <!-- Footer -->
         <footer>
-            <p>🔐 Your privacy is our priority. All encryption happens in your browser.</p>
+            <p>🎨 Create amazing images with the power of AI. Your imagination is the only limit!</p>
+            <p class="footer-note">This tool uses Hugging Face's Inference API. You need a free API key to use it.</p>
         </footer>
     </div>
 
     <!-- Main Application Script -->
-    <script type="module" src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

@@ -1,18 +1,19 @@
 {
-  "name": "secure-file-sharing-system",
+  "name": "ai-image-generator",
   "version": "1.0.0",
-  "description": "Encrypted cloud storage with client-side encryption using CryptoJS and Firebase/Node.js backend",
-  "main": "server.js",
+  "description": "AI-powered image generation tool using Hugging Face's Stable Diffusion models. Create stunning images from text prompts.",
+  "main": "app.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
   "keywords": [
-    "encryption",
-    "file-sharing",
-    "cryptojs",
-    "firebase",
-    "secure-storage"
+    "ai",
+    "image-generation",
+    "stable-diffusion",
+    "huggingface",
+    "text-to-image",
+    "machine-learning"
   ],
   "author": "",
   "license": "MIT",
