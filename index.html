@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure File Sharing System - Encrypted Cloud Storage</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- CryptoJS Library for AES Encryption/Decryption -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    
+    <!-- Firebase SDK (v9 modular) -->
+    <script type="module" src="firebase-config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <h1>🔒 Secure File Sharing System</h1>
+            <p class="subtitle">End-to-End Encrypted Cloud Storage</p>
+            <p class="info">All files are encrypted in your browser before upload. Your passphrase never leaves your device.</p>
+        </header>
+
+        <!-- Backend Selection -->
+        <div class="backend-selector">
+            <label>
+                <input type="radio" name="backend" value="firebase" checked>
+                <span>Firebase Storage</span>
+            </label>
+            <label>
+                <input type="radio" name="backend" value="nodejs">
+                <span>Node.js Backend</span>
+            </label>
+        </div>
+
+        <!-- Authentication Section (Firebase Only) -->
+        <div id="auth-section" class="card">
+            <h2>🔐 Authentication</h2>
+            <div id="auth-status" class="auth-status">
+                <p>Not logged in</p>
+            </div>
+            <div id="auth-buttons">
+                <button id="login-btn" class="btn btn-secondary">Login with Google</button>
+                <button id="logout-btn" class="btn btn-secondary" style="display: none;">Logout</button>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="card">
+            <h2>📤 Encrypt & Upload File</h2>
+            
+            <div class="form-group">
+                <label for="file-input">Select File:</label>
+                <input type="file" id="file-input" class="file-input">
+                <div class="file-info" id="file-info"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="upload-passphrase">Encryption Passphrase:</label>
+                <input type="password" id="upload-passphrase" class="input-field" placeholder="Enter a strong passphrase">
+                <small>⚠️ Remember this passphrase - you'll need it to decrypt the file!</small>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="show-upload-pass">
+                    Show passphrase
+                </label>
+            </div>
+
+            <button id="encrypt-upload-btn" class="btn btn-primary">🔒 Encrypt & Upload</button>
+            
+            <div id="upload-progress" class="progress-section"></div>
+        </div>
+
+        <!-- Download Section -->
+        <div class="card">
+            <h2>📥 Download & Decrypt File</h2>
+            
+            <div class="form-group">
+                <label for="file-url">File URL or ID:</label>
+                <input type="text" id="file-url" class="input-field" placeholder="Enter file URL or ID">
+                <small>Paste the download link you received</small>
+            </div>
+
+            <div class="form-group">
+                <label for="download-passphrase">Decryption Passphrase:</label>
+                <input type="password" id="download-passphrase" class="input-field" placeholder="Enter the passphrase">
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="show-download-pass">
+                    Show passphrase
+                </label>
+            </div>
+
+            <button id="download-decrypt-btn" class="btn btn-primary">🔓 Download & Decrypt</button>
+            
+            <div id="download-progress" class="progress-section"></div>
+        </div>
+
+        <!-- Uploaded Files List (Firebase Only) -->
+        <div id="files-list-section" class="card" style="display: none;">
+            <h2>📁 Your Uploaded Files</h2>
+            <div id="files-list" class="files-list"></div>
+        </div>
+
+        <!-- File Integrity Check Section -->
+        <div class="card">
+            <h2>✅ File Integrity Verification</h2>
+            <p class="info">Verify file integrity using SHA-256 hash</p>
+            
+            <div class="form-group">
+                <label for="verify-file-input">Select File to Verify:</label>
+                <input type="file" id="verify-file-input" class="file-input">
+            </div>
+
+            <button id="verify-btn" class="btn btn-secondary">Calculate SHA-256 Hash</button>
+            
+            <div id="verify-result" class="verify-result"></div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="card instructions">
+            <h2>📖 How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <h3>Upload Process:</h3>
+                    <ol>
+                        <li>Select a file from your device</li>
+                        <li>Enter a strong passphrase (remember it!)</li>
+                        <li>File is encrypted locally using AES-256</li>
+                        <li>Encrypted file (.enc) is uploaded to cloud storage</li>
+                        <li>You receive a download link/ID</li>
+                    </ol>
+                </div>
+                <div class="step">
+                    <h3>Download Process:</h3>
+                    <ol>
+                        <li>Paste the file URL or ID</li>
+                        <li>Enter the same passphrase used for encryption</li>
+                        <li>Encrypted file is downloaded from cloud</li>
+                        <li>File is decrypted locally in your browser</li>
+                        <li>Original file is saved to your device</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="security-note">
+                <strong>🔒 Security Features:</strong>
+                <ul>
+                    <li>✅ Client-side AES-256 encryption</li>
+                    <li>✅ Passphrase never sent to server</li>
+                    <li>✅ Server only stores encrypted data</li>
+                    <li>✅ SHA-256 integrity verification</li>
+                    <li>✅ Optional Firebase Authentication</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>🔐 Your privacy is our priority. All encryption happens in your browser.</p>
+        </footer>
+    </div>
+
+    <!-- Main Application Script -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
